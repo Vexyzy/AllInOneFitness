@@ -1,5 +1,9 @@
 package com.example.all_in_one_fitness.timer
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -12,10 +16,43 @@ import com.example.all_in_one_fitness.timer.util.PrefUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.sql.Time
+import java.util.Calendar
 import java.util.Timer
 
 
 class TimerFragment : Fragment() {
+
+    companion object{
+        fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining: Long): Long{
+            val wakeUpTime = (nowSeconds + secondsRemaining) * 1000
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context, TimerReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_MUTABLE
+            )
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, wakeUpTime, pendingIntent)
+            PrefUtil.setAlarmSetTime(nowSeconds, context)
+            return wakeUpTime
+        }
+
+        fun removeAlarm(context: Context){
+            val intent = Intent(context, TimerReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_MUTABLE
+            )
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.cancel(pendingIntent)
+            PrefUtil.setAlarmSetTime(0, context)
+        }
+        val nowSeconds: Long
+            get() = Calendar.getInstance().timeInMillis / 1000
+    }
 
     enum class TimerState{
         Stopped, Paused, Running
@@ -84,6 +121,9 @@ class TimerFragment : Fragment() {
         super.onResume()
 
         initTimer()
+
+        removeAlarm(requireContext())
+        //TODO: hide notification
     }
 
     override fun onPause(){
@@ -91,7 +131,8 @@ class TimerFragment : Fragment() {
 
         if(timerState == TimerState.Running){
             timer.cancel()
-            //TODO: start background timer and show notification
+            val wakeUpTime = setAlarm(requireContext(), nowSeconds, secondsRemaining)
+            //TODO: show notification
         }
         else if(timerState == TimerState.Paused) {
                 //TODO: show notification
@@ -114,9 +155,14 @@ class TimerFragment : Fragment() {
         else
             timerLengthSeconds
 
-        //TODO: change secondsRemaining  according to where the background timer stopped
+        val alarmSetTime = PrefUtil.getAlarmSetTime(requireContext())
+        if(alarmSetTime > 0){
+            secondsRemaining -= nowSeconds - alarmSetTime
+        }
 
-        //resume where we left off
+        if(secondsRemaining <= 0){
+            onTimerFinished()
+        }
         if(timerState == TimerState.Running)
             startTimer()
 

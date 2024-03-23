@@ -1,6 +1,7 @@
 package com.example.all_in_one_fitness.timer.util
 
 import android.content.Context
+import android.preference.Preference
 import android.preference.PreferenceManager
 import com.example.all_in_one_fitness.timer.TimerFragment
 import java.sql.Time
@@ -53,6 +54,20 @@ class PrefUtil {
         fun setSecondRemaining(seconds: Long, context: Context){
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             editor.putLong(SECONDS_REMAINING_ID, seconds)
+            editor.apply()
+        }
+
+        private const val ALARM_SET_TIME_ID = "com.example.all_in_one_fitness.timer" +
+                ".backgrounded_time"
+
+        fun getAlarmSetTime(context: Context): Long{
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getLong(ALARM_SET_TIME_ID, 0)
+        }
+
+        fun setAlarmSetTime(time: Long, context: Context){
+            val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+            editor.putLong(ALARM_SET_TIME_ID, time)
             editor.apply()
         }
     }
