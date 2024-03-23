@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.all_in_one_fitness.fragment.StepsFragment
+import com.example.all_in_one_fitness.timer.TimerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity(){
             when(it.itemId){
                 R.id.nav_steps -> {
                     replaceFragment(StepsFragment())
+                }
+                R.id.nav_timers ->{
+                    replaceFragment(TimerFragment())
                 }
             }
             true

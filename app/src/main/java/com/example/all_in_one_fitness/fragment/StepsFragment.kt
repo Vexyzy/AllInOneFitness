@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.all_in_one_fitness.MainActivity
@@ -39,6 +40,13 @@ class StepsFragment : Fragment(), SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
         loadData()
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val button = requireView().findViewById<Button>(R.id.button_add)
+
+        button.setOnClickListener{
+            val sensor: SensorEvent? = null
+            onSensorChanged(sensor)
+            totalSteps += 100
+        }
     }
 
     override fun onResume() {
@@ -52,30 +60,35 @@ class StepsFragment : Fragment(), SensorEventListener {
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
         }
     }
-
     override fun onSensorChanged(event: SensorEvent?) {
         if(running){
             val stepsCounter: TextView = requireView().findViewById(R.id.stepsCounter)
             val progressBar: CircularProgressBar = requireView().findViewById(R.id.progress_circular)
-            totalSteps = event!!.values[0]
+//            totalSteps = event!!.values[0]
             val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
             stepsCounter.text = ("$currentSteps")
 
             progressBar.apply{
                 setProgressWithAnimation(currentSteps.toFloat())
             }
+            saveData()
         }
     }
 
     private fun loadData() {
         val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val savedNumber = sharedPreferences.getFloat("key1", 0f);
-        Log.d("MainActivity", "$savedNumber")
+        Log.d("StepsFragment", "$savedNumber")
         previousTotalSteps = savedNumber
     }
 
+    private fun saveData() {
+        val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putFloat("key1", previousTotalSteps)
+        editor.apply()
+    }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
     }
 
 
