@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">All-in-one-Fitness</string>
+    <string name="steps">Steps</string>
+    <string name="timers">Timers</string>
+    <string name="fitness">Fitness</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_fitnessCenter"
+        android:title="@string/fitness"
+        android:icon="@drawable/baseline_fitness_center_24"/>
+    <item
+        android:id="@+id/nav_steps"
+        android:title="@string/steps"
+        android:icon="@drawable/baseline_snowshoeing_24"/>
+    <item
+        android:id="@+id/nav_timers"
+        android:title="@string/timers"
+        android:icon="@drawable/baseline_timer_24"/>
+</menu>
