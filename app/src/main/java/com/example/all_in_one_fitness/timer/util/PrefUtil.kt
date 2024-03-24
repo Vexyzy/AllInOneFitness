@@ -1,10 +1,9 @@
 package com.example.all_in_one_fitness.timer.util
 
 import android.content.Context
-import android.preference.Preference
 import android.preference.PreferenceManager
 import com.example.all_in_one_fitness.timer.TimerFragment
-import java.sql.Time
+
 
 class PrefUtil {
     companion object{

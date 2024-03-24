@@ -12,13 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.all_in_one_fitness.R
+import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import java.sql.Time
 import java.util.Calendar
-import java.util.Timer
-
 
 class TimerFragment : Fragment() {
 
@@ -31,7 +29,7 @@ class TimerFragment : Fragment() {
                 context,
                 0,
                 intent,
-                PendingIntent.FLAG_MUTABLE
+                0
             )
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, wakeUpTime, pendingIntent)
             PrefUtil.setAlarmSetTime(nowSeconds, context)
@@ -44,7 +42,7 @@ class TimerFragment : Fragment() {
                 context,
                 0,
                 intent,
-                PendingIntent.FLAG_MUTABLE
+                0
             )
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
@@ -123,7 +121,7 @@ class TimerFragment : Fragment() {
         initTimer()
 
         removeAlarm(requireContext())
-        //TODO: hide notification
+        NotificationUtil.hideTimerNotification(requireContext())
     }
 
     override fun onPause(){
@@ -132,10 +130,10 @@ class TimerFragment : Fragment() {
         if(timerState == TimerState.Running){
             timer.cancel()
             val wakeUpTime = setAlarm(requireContext(), nowSeconds, secondsRemaining)
-            //TODO: show notification
+            NotificationUtil.showTimerRunning(requireContext(), wakeUpTime)
         }
         else if(timerState == TimerState.Paused) {
-                //TODO: show notification
+                NotificationUtil.showTimerPaused(requireContext())
             }
         PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, requireContext())
         PrefUtil.setSecondRemaining(secondsRemaining, requireContext())
