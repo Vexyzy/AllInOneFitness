@@ -15,6 +15,7 @@ class TimerNotificationActionReceiver : BroadcastReceiver() {
             AppConstants.ACTION_STOP -> {
                 TimerFragment.removeAlarm(context)
                 PrefUtil.setTimerState(TimerFragment.TimerState.Stopped, context)
+                NotificationUtil.showTimerExpired(context)
                 NotificationUtil.hideTimerNotification(context)
             }
             AppConstants.ACTION_PAUSE -> {
@@ -41,7 +42,6 @@ class TimerNotificationActionReceiver : BroadcastReceiver() {
                 PrefUtil.setSecondRemaining(secondsRemaining, context)
                 NotificationUtil.showTimerRunning(context, wakeUpTime)
             }
-
         }
     }
 }

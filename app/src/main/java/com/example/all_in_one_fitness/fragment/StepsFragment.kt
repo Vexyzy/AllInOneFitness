@@ -38,7 +38,7 @@ class StepsFragment : Fragment(), SensorEventListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadData()
+        //loadData()
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val button = requireView().findViewById<Button>(R.id.button_add)
 

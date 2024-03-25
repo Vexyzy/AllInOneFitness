@@ -141,7 +141,7 @@ class NotificationUtil {
                                                 playSound: Boolean
                                                                 ){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                val channelImportance = if (playSound) NotificationManager.IMPORTANCE_HIGH
+                val channelImportance = if (playSound) NotificationManager.IMPORTANCE_DEFAULT
                 else NotificationManager.IMPORTANCE_LOW
                 val nChannel = NotificationChannel(channelId, channelName, channelImportance)
                 nChannel.enableLights(true)
