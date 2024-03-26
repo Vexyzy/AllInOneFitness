@@ -15,6 +15,7 @@ import com.example.all_in_one_fitness.fragment.StepsFragment
 import com.example.all_in_one_fitness.timer.TimerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import java.sql.Time
 
 
 class MainActivity : AppCompatActivity(), SensorEventListener{
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
 
         running = true
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        val fTrans = supportFragmentManager.beginTransaction()
+        val fragmentSteps = StepsFragment()
+        val fragmentsTimer = TimerFragment()
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_steps -> {
@@ -42,6 +46,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
                 }
                 R.id.nav_timers ->{
                     replaceFragment(TimerFragment())
+                }
+                R.id.nav_fitnessCenter ->{
+                    supportFragmentManager
+                        .beginTransaction()
+                        .remove(StepsFragment())
+                        .commit()
                 }
             }
             true
@@ -60,7 +70,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
         super.onResume()
         running = true
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
         if(stepSensor != null){
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
         }

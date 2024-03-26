@@ -2,6 +2,7 @@ package com.example.all_in_one_fitness.fragment
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
@@ -17,7 +18,7 @@ import com.example.all_in_one_fitness.R
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 
-class StepsFragment : Fragment() {
+class StepsFragment : Fragment(), SensorEventListener{
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,34 +37,46 @@ class StepsFragment : Fragment() {
             MainActivity.currentSteps += 100
         }
 
-
         val stepsCounter: TextView = requireActivity().findViewById(R.id.stepsCounter)
         val progressBar: CircularProgressBar = requireActivity().findViewById(R.id.progress_circular)
-        Handler(Looper.getMainLooper()).postDelayed({
-            if(MainActivity.running){
-                val currentSpes = MainActivity.currentSteps
-                stepsCounter.text = ("$currentSpes")
-                progressBar.apply{
-                    setProgressWithAnimation(MainActivity.currentSteps!!.toFloat())
-                }
+        if(MainActivity.running){
+            val currentSpes = MainActivity.currentSteps
+            stepsCounter.text = ("$currentSpes")
+            progressBar.apply{
+                setProgressWithAnimation(MainActivity.currentSteps.toFloat())
             }
-        }, 10)
-
+        }
     }
 
     override fun onResume() {
         super.onResume()
         val stepsCounter: TextView = requireActivity().findViewById(R.id.stepsCounter)
         val progressBar: CircularProgressBar = requireActivity().findViewById(R.id.progress_circular)
-        Handler(Looper.getMainLooper()).postDelayed({
-            if(MainActivity.running){
-                val currentSpes = MainActivity.currentSteps
-                stepsCounter.text = ("$currentSpes")
-                progressBar.apply{
-                    setProgressWithAnimation(MainActivity.currentSteps!!.toFloat())
-                }
-            }
-        }, 10)
 
+        if(MainActivity.running){
+            val currentSteps = MainActivity.currentSteps
+            stepsCounter.text = ("$currentSteps")
+            progressBar.apply{
+                setProgressWithAnimation(currentSteps.toFloat())
+            }
+        }
+
+    }
+
+    override fun onSensorChanged(p0: SensorEvent?) {
+        val stepsCounter: TextView = requireActivity().findViewById(R.id.stepsCounter)
+        val progressBar: CircularProgressBar = requireActivity().findViewById(R.id.progress_circular)
+
+        if(MainActivity.running){
+            val currentSteps = MainActivity.currentSteps
+            stepsCounter.text = ("$currentSteps")
+            progressBar.apply{
+                setProgressWithAnimation(currentSteps.toFloat())
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        TODO("Not yet implemented")
     }
 }
