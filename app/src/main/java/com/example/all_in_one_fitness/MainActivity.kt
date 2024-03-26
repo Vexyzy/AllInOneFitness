@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,27 +19,21 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 class MainActivity : AppCompatActivity(), SensorEventListener{
 
+
     private var sensorManager: SensorManager? = null
 
-    private var running = false
-    private var totalSteps = 0f
-    private var previousTotalSteps = 0f
-
     companion object{
-        var totalSteps = 0f;
-        var running = true
-        var currentSteps = 0;
+        var running = false
+        var totalSteps = 0f
+        var currentSteps: Int = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        sensorManager = this.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        AsyncTask.execute {
-            //TODO your background code
-        }
-
+        running = true
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
@@ -53,18 +48,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-//        if(stepSensor == null){
-//            Toast.makeText(requireContext(), "No sensor detected on this device", Toast.LENGTH_SHORT).show()
-//        } else{
-//            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-//        }
-    }
-
     private fun replaceFragment(fragment: Fragment)
     {
         supportFragmentManager
@@ -73,19 +56,24 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
             .commit()
     }
 
+    override fun onResume() {
+        super.onResume()
+        running = true
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        if(stepSensor != null){
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
     override fun onSensorChanged(event: SensorEvent?) {
         if(running){
             totalSteps = event!!.values[0]
             currentSteps = totalSteps.toInt()
         }
     }
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
 
-    override fun onPause() {
-        super.onPause()
-        running = true
-        sensorManager?.unregisterListener(this)
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
     }
 
 }

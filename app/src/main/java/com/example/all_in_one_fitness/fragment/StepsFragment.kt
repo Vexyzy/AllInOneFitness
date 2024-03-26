@@ -9,6 +9,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.all_in_one_fitness.MainActivity
@@ -17,8 +18,6 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 
 class StepsFragment : Fragment() {
-
-    val ACTIVITY_RECOGNITION_REQUEST_CODE = 100
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,15 +30,21 @@ class StepsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val button = requireActivity().findViewById<Button>(R.id.button_add)
 
-        val stepsCounter: TextView = requireView().findViewById(R.id.stepsCounter)
-        val progressBar: CircularProgressBar = requireView().findViewById(R.id.progress_circular)
+        button.setOnClickListener{
+            MainActivity.currentSteps += 100
+        }
+
+
+        val stepsCounter: TextView = requireActivity().findViewById(R.id.stepsCounter)
+        val progressBar: CircularProgressBar = requireActivity().findViewById(R.id.progress_circular)
         Handler(Looper.getMainLooper()).postDelayed({
             if(MainActivity.running){
-                val currentSteps = MainActivity.totalSteps.toInt()
-                stepsCounter.text = ("$currentSteps")
+                val currentSpes = MainActivity.currentSteps
+                stepsCounter.text = ("$currentSpes")
                 progressBar.apply{
-                    setProgressWithAnimation(currentSteps.toFloat())
+                    setProgressWithAnimation(MainActivity.currentSteps!!.toFloat())
                 }
             }
         }, 10)
@@ -48,14 +53,14 @@ class StepsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val stepsCounter: TextView = requireView().findViewById(R.id.stepsCounter)
-        val progressBar: CircularProgressBar = requireView().findViewById(R.id.progress_circular)
+        val stepsCounter: TextView = requireActivity().findViewById(R.id.stepsCounter)
+        val progressBar: CircularProgressBar = requireActivity().findViewById(R.id.progress_circular)
         Handler(Looper.getMainLooper()).postDelayed({
             if(MainActivity.running){
-                val currentSteps = MainActivity.totalSteps.toInt()
-                stepsCounter.text = ("$currentSteps")
+                val currentSpes = MainActivity.currentSteps
+                stepsCounter.text = ("$currentSpes")
                 progressBar.apply{
-                    setProgressWithAnimation(currentSteps.toFloat())
+                    setProgressWithAnimation(MainActivity.currentSteps!!.toFloat())
                 }
             }
         }, 10)
