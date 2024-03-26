@@ -1,5 +1,6 @@
 package com.example.all_in_one_fitness.timer.util
 
+import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -32,7 +33,7 @@ class NotificationUtil {
                 context,
                 0,
                 startIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
             val nBuilder = getBasicNotificationBuilder(context, CHANNEL_ID_TIME, true)
             nBuilder
@@ -54,7 +55,7 @@ class NotificationUtil {
                 context,
                 0,
                 stopIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             val pauseIntent = Intent(context, TimerNotificationActionReceiver::class.java)
@@ -63,7 +64,7 @@ class NotificationUtil {
                 context,
                 0,
                 pauseIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_MUTABLE
             )
 
             val df = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
@@ -90,7 +91,7 @@ class NotificationUtil {
                 context,
                 0,
                 resumeIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_MUTABLE
             )
 
             val nBuilder = getBasicNotificationBuilder(context, CHANNEL_ID_TIME, true)
@@ -132,9 +133,10 @@ class NotificationUtil {
             stackBuilder.addNextIntent(resultIntent)
 
             return stackBuilder.getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+                PendingIntent.FLAG_MUTABLE)
         }
 
+        @TargetApi(26)
         private fun NotificationManager.createNotificationChannel(
                                                 channelId: String,
                                                 channelName: String,

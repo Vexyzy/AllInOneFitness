@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.all_in_one_fitness.MainActivity
 import com.example.all_in_one_fitness.R
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
@@ -29,7 +30,7 @@ class TimerFragment : Fragment() {
                 context,
                 0,
                 intent,
-                0
+                PendingIntent.FLAG_IMMUTABLE
             )
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, wakeUpTime, pendingIntent)
             PrefUtil.setAlarmSetTime(nowSeconds, context)
@@ -42,7 +43,7 @@ class TimerFragment : Fragment() {
                 context,
                 0,
                 intent,
-                0
+                PendingIntent.FLAG_IMMUTABLE
             )
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
@@ -218,9 +219,6 @@ class TimerFragment : Fragment() {
     }
 
     private fun updateButtons(){
-//        buttonStart = requireView().findViewById(R.id.button_start)
-//        buttonPause = requireView().findViewById(R.id.button_pause)
-//        buttonStop = requireView().findViewById(R.id.button_stop)
         when(timerState){
             TimerState.Running -> {
                 buttonStart.isEnabled = false
