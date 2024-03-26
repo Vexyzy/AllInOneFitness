@@ -8,9 +8,9 @@ import com.example.all_in_one_fitness.timer.TimerFragment
 class PrefUtil {
     companion object{
 
-        fun getTimerLength(context: Context): Int{
+        fun getTimerLength(context: Context): Long{
             //placeholder
-            return 1
+            return TimerFragment.timerLenInt.toLong()
         }
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "com.example.all_in_one_fitness.timer" +

@@ -3,6 +3,7 @@ package com.example.all_in_one_fitness.timer
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.DialogFragment
 import com.example.all_in_one_fitness.AppConstants
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
@@ -36,7 +37,7 @@ class TimerNotificationActionReceiver : BroadcastReceiver() {
             }
             AppConstants.ACTION_START ->{
                 val minutesRemaining = PrefUtil.getTimerLength(context)
-                val secondsRemaining = minutesRemaining * 60L
+                val secondsRemaining = (minutesRemaining * 60L)
                 val wakeUpTime = TimerFragment.setAlarm(context, TimerFragment.nowSeconds, secondsRemaining)
                 PrefUtil.setTimerState(TimerFragment.TimerState.Running, context)
                 PrefUtil.setSecondRemaining(secondsRemaining, context)

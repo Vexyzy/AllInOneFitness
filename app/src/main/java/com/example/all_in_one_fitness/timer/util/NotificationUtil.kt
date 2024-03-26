@@ -91,7 +91,7 @@ class NotificationUtil {
                 context,
                 0,
                 resumeIntent,
-                PendingIntent.FLAG_MUTABLE
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             val nBuilder = getBasicNotificationBuilder(context, CHANNEL_ID_TIME, true)
