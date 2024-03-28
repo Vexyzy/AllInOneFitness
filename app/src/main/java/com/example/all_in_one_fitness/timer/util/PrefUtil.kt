@@ -10,7 +10,7 @@ class PrefUtil {
 
         fun getTimerLength(context: Context): Long{
             //placeholder
-            return TimerFragment.timerLenInt.toLong()
+            return 210L
         }
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "com.example.all_in_one_fitness.timer" +

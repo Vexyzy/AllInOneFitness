@@ -67,7 +67,6 @@ class TimerFragment : Fragment() {
     enum class TimerState{
         Stopped, Paused, Running
     }
-
     private lateinit var settings: Button
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
@@ -107,14 +106,7 @@ class TimerFragment : Fragment() {
             myDialogFragment.show(manager, "myDialog")
             onTimerFinished()
         }
-        Thread{
-            while(true)
-                if(isNewTimeSet)
-                {
 
-                    isNewTimeSet = false
-                }
-        }
         timer = object : CountDownTimer(secondsRemaining * 1000, 1000){
             override fun onFinish() = onTimerFinished()
 
@@ -228,9 +220,12 @@ class TimerFragment : Fragment() {
     }
 
     private fun setNewTimerLength(){
-        timerString.text = PrefUtil.getTimerLength(requireContext()).toString() + ":00"
-        val lengthInMinutes = PrefUtil.getTimerLength(requireContext())
-        timerLengthSeconds = (lengthInMinutes * 60L)
+        val count = PrefUtil.getTimerLength(requireContext())/60L
+        val seconds = count % 60
+        val minute = count / 60
+        timerString.text = ("$minute:$seconds")
+        val lengthInSeconds = PrefUtil.getTimerLength(requireContext())
+        timerLengthSeconds = (lengthInSeconds)
         progressCountdown.progressMax = timerLengthSeconds.toFloat()
     }
 
