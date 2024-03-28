@@ -47,7 +47,8 @@ class StepsFragment : Fragment(), SensorEventListener{
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         button.setOnClickListener{
-
+            totalSteps += 100
+            onSensorChanged(null)
         }
     }
 
@@ -66,13 +67,14 @@ class StepsFragment : Fragment(), SensorEventListener{
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        totalSteps = p0!!.values[0]
+        //totalSteps = p0!!.values[0]
         stepsCounter.text = ("${totalSteps.toInt()}")
 
-        progressBar.progress = totalSteps
+        progressBar.apply{
+            setProgressWithAnimation(totalSteps)
+        }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        TODO("Not yet implemented")
     }
 }
