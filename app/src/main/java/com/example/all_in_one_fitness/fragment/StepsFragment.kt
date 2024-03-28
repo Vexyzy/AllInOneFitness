@@ -40,16 +40,10 @@ class StepsFragment : Fragment(), SensorEventListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button = requireActivity().findViewById<Button>(R.id.button_add)
         stepsCounter = requireActivity().findViewById(R.id.stepsCounter)
         progressBar = requireActivity().findViewById(R.id.progress_circular)
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        button.setOnClickListener{
-            totalSteps += 100
-            onSensorChanged(null)
-        }
     }
 
     override fun onResume() {
