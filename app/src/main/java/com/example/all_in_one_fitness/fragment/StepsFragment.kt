@@ -67,11 +67,12 @@ class StepsFragment : Fragment(), SensorEventListener{
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        //totalSteps = p0!!.values[0]
-        stepsCounter.text = ("${totalSteps.toInt()}")
+        totalSteps = p0!!.values[0]
+        val currentSteps = totalSteps.toInt()
+        stepsCounter.text = ("$currentSteps")
 
         progressBar.apply{
-            setProgressWithAnimation(totalSteps)
+            setProgressWithAnimation(currentSteps.toFloat())
         }
     }
 
