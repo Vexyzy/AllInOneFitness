@@ -18,27 +18,13 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.sql.Time
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener{
-
-
-    private var sensorManager: SensorManager? = null
-
-    companion object{
-        var running = false
-        var totalSteps = 0f
-        var currentSteps: Int = 0
-    }
+class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        running = true
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
-        val fTrans = supportFragmentManager.beginTransaction()
-        val fragmentSteps = StepsFragment()
-        val fragmentsTimer = TimerFragment()
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_steps -> {
@@ -48,10 +34,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
                     replaceFragment(TimerFragment())
                 }
                 R.id.nav_fitnessCenter ->{
-                    supportFragmentManager
-                        .beginTransaction()
-                        .remove(StepsFragment())
-                        .commit()
                 }
             }
             true
@@ -65,24 +47,4 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
             .replace(R.id.framgeContainer, fragment)
             .commit()
     }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if(stepSensor != null){
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        }
-    }
-    override fun onSensorChanged(event: SensorEvent?) {
-        if(running){
-            totalSteps = event!!.values[0]
-            currentSteps = totalSteps.toInt()
-        }
-    }
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
-    }
-
 }
