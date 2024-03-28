@@ -31,7 +31,6 @@ import java.util.Calendar
 class TimerFragment : Fragment() {
 
     companion object{
-        lateinit var settings: Button
         var timerLenInt = 1
         var isNewTimeSet = false;
         fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining: Long): Long{
@@ -69,6 +68,7 @@ class TimerFragment : Fragment() {
         Stopped, Paused, Running
     }
 
+    private lateinit var settings: Button
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.Stopped
@@ -105,14 +105,21 @@ class TimerFragment : Fragment() {
             val myDialogFragment = Dialog()
             val manager = requireFragmentManager()
             myDialogFragment.show(manager, "myDialog")
+            onTimerFinished()
         }
+        Thread{
+            while(true)
+                if(isNewTimeSet)
+                {
 
+                    isNewTimeSet = false
+                }
+        }
         timer = object : CountDownTimer(secondsRemaining * 1000, 1000){
             override fun onFinish() = onTimerFinished()
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished / 1000
-                updateCountdownUI()
             }
         }
         progressCountdown.progress = 0f
@@ -136,8 +143,6 @@ class TimerFragment : Fragment() {
         }
 
         restore.setOnClickListener{
-            startTimer()
-            timer.cancel()
             onTimerFinished()
         }
     }
