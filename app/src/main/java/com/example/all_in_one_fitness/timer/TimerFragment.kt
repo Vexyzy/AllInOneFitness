@@ -6,33 +6,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
-import com.example.all_in_one_fitness.Dialog
-import com.example.all_in_one_fitness.MainActivity
 import com.example.all_in_one_fitness.R
-import com.example.all_in_one_fitness.fragment.StepsFragment
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import org.w3c.dom.Text
-import java.sql.Time
 import java.util.Calendar
 
 class TimerFragment : Fragment() {
 
     companion object{
-        lateinit var settings: Button
-        var timerLenInt = 1
+        var timerLenInt = 60
         var isNewTimeSet = false;
         fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining: Long): Long{
             val wakeUpTime = (nowSeconds + secondsRemaining) * 1000
@@ -68,7 +58,7 @@ class TimerFragment : Fragment() {
     enum class TimerState{
         Stopped, Paused, Running
     }
-
+    private lateinit var settings: Button
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.Stopped
@@ -99,22 +89,24 @@ class TimerFragment : Fragment() {
         timerString = requireView().findViewById(R.id.timer)
         progressCountdown = requireView().findViewById(R.id.progress_circular)
         settings = requireView().findViewById(R.id.settings)
-        restore = requireView().findViewById(R.id.restore)
-
-        settings.setOnClickListener{
-            val myDialogFragment = Dialog()
-            val manager = requireFragmentManager()
-            myDialogFragment.show(manager, "myDialog")
-        }
 
         timer = object : CountDownTimer(secondsRemaining * 1000, 1000){
             override fun onFinish() = onTimerFinished()
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished / 1000
-                updateCountdownUI()
             }
         }
+
+        if(isNewTimeSet) {
+            onTimerFinished()
+            isNewTimeSet = false
+        }
+        settings.setOnClickListener{
+            val intent = Intent(requireContext(), TimerSettings::class.java)
+            startActivity(intent)
+        }
+
         progressCountdown.progress = 0f
         progressCountdown.progressMax = timerLengthSeconds.toFloat()
 
@@ -131,12 +123,6 @@ class TimerFragment : Fragment() {
         }
 
         buttonStop.setOnClickListener {v ->
-            timer.cancel()
-            onTimerFinished()
-        }
-
-        restore.setOnClickListener{
-            startTimer()
             timer.cancel()
             onTimerFinished()
         }
@@ -223,9 +209,12 @@ class TimerFragment : Fragment() {
     }
 
     private fun setNewTimerLength(){
-        timerString.text = PrefUtil.getTimerLength(requireContext()).toString() + ":00"
-        val lengthInMinutes = PrefUtil.getTimerLength(requireContext())
-        timerLengthSeconds = (lengthInMinutes * 60L)
+        val count = PrefUtil.getTimerLength(requireContext())/60L
+        val seconds = count % 60
+        val minute = count / 60
+        timerString.text = ("$minute:$seconds")
+        val lengthInSeconds = PrefUtil.getTimerLength(requireContext())
+        timerLengthSeconds = (lengthInSeconds)
         progressCountdown.progressMax = timerLengthSeconds.toFloat()
     }
 
@@ -252,21 +241,18 @@ class TimerFragment : Fragment() {
                 buttonPause.isEnabled = true
                 buttonStop.isEnabled = true
                 settings.isEnabled = false
-                restore.isEnabled = false
             }
             TimerState.Stopped -> {
                 buttonStart.isEnabled = true
                 buttonPause.isEnabled = false
                 buttonStop.isEnabled = false
                 settings.isEnabled = true
-                restore.isEnabled = true
             }
             TimerState.Paused -> {
                 buttonStart.isEnabled = true
                 buttonPause.isEnabled = false
                 buttonStop.isEnabled = true
                 settings.isEnabled = false
-                restore.isEnabled = false
             }
         }
     }
