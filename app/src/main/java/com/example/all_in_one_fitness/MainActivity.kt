@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.all_in_one_fitness.fragment.StepsFragment
 import com.example.all_in_one_fitness.timer.TimerFragment
@@ -18,27 +19,19 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.sql.Time
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener{
-
-
-    private var sensorManager: SensorManager? = null
-
-    companion object{
-        var running = false
-        var totalSteps = 0f
-        var currentSteps: Int = 0
-    }
+class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        running = true
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
-        val fTrans = supportFragmentManager.beginTransaction()
-        val fragmentSteps = StepsFragment()
-        val fragmentsTimer = TimerFragment()
+        if(TimerFragment.isNewTimeSet)
+        {
+            replaceFragment(TimerFragment())
+            bottomNavigation.selectedItemId = R.id.nav_timers;
+        }
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_steps -> {
@@ -65,24 +58,4 @@ class MainActivity : AppCompatActivity(), SensorEventListener{
             .replace(R.id.framgeContainer, fragment)
             .commit()
     }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if(stepSensor != null){
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        }
-    }
-    override fun onSensorChanged(event: SensorEvent?) {
-        if(running){
-            totalSteps = event!!.values[0]
-            currentSteps = totalSteps.toInt()
-        }
-    }
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
-    }
-
 }
