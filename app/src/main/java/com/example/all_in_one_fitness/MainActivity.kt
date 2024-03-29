@@ -27,6 +27,11 @@ class MainActivity : AppCompatActivity(){
 
         val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        if(TimerFragment.isNewTimeSet)
+        {
+            replaceFragment(TimerFragment())
+            bottomNavigation.selectedItemId = R.id.nav_timers;
+        }
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_steps -> {

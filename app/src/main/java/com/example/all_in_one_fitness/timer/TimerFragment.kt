@@ -6,32 +6,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
-import com.example.all_in_one_fitness.Dialog
-import com.example.all_in_one_fitness.MainActivity
 import com.example.all_in_one_fitness.R
-import com.example.all_in_one_fitness.fragment.StepsFragment
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import org.w3c.dom.Text
-import java.sql.Time
 import java.util.Calendar
 
 class TimerFragment : Fragment() {
 
     companion object{
-        var timerLenInt = 1
+        var timerLenInt = 60
         var isNewTimeSet = false;
         fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining: Long): Long{
             val wakeUpTime = (nowSeconds + secondsRemaining) * 1000
@@ -98,14 +89,6 @@ class TimerFragment : Fragment() {
         timerString = requireView().findViewById(R.id.timer)
         progressCountdown = requireView().findViewById(R.id.progress_circular)
         settings = requireView().findViewById(R.id.settings)
-        restore = requireView().findViewById(R.id.restore)
-
-        settings.setOnClickListener{
-            val myDialogFragment = Dialog()
-            val manager = requireFragmentManager()
-            myDialogFragment.show(manager, "myDialog")
-            onTimerFinished()
-        }
 
         timer = object : CountDownTimer(secondsRemaining * 1000, 1000){
             override fun onFinish() = onTimerFinished()
@@ -114,6 +97,16 @@ class TimerFragment : Fragment() {
                 secondsRemaining = millisUntilFinished / 1000
             }
         }
+
+        if(isNewTimeSet) {
+            onTimerFinished()
+            isNewTimeSet = false
+        }
+        settings.setOnClickListener{
+            val intent = Intent(requireContext(), TimerSettings::class.java)
+            startActivity(intent)
+        }
+
         progressCountdown.progress = 0f
         progressCountdown.progressMax = timerLengthSeconds.toFloat()
 
@@ -131,10 +124,6 @@ class TimerFragment : Fragment() {
 
         buttonStop.setOnClickListener {v ->
             timer.cancel()
-            onTimerFinished()
-        }
-
-        restore.setOnClickListener{
             onTimerFinished()
         }
     }
@@ -252,21 +241,18 @@ class TimerFragment : Fragment() {
                 buttonPause.isEnabled = true
                 buttonStop.isEnabled = true
                 settings.isEnabled = false
-                restore.isEnabled = false
             }
             TimerState.Stopped -> {
                 buttonStart.isEnabled = true
                 buttonPause.isEnabled = false
                 buttonStop.isEnabled = false
                 settings.isEnabled = true
-                restore.isEnabled = true
             }
             TimerState.Paused -> {
                 buttonStart.isEnabled = true
                 buttonPause.isEnabled = false
                 buttonStop.isEnabled = true
                 settings.isEnabled = false
-                restore.isEnabled = false
             }
         }
     }
