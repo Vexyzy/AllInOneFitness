@@ -13,11 +13,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.all_in_one_fitness.R
+import com.example.all_in_one_fitness.data.MonthConverter
 import com.example.all_in_one_fitness.data.Steps
-import com.example.all_in_one_fitness.data.StepsViewModel
+import com.example.roomapp.data.StepsViewModel
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.launch
+import java.security.KeyStore.TrustedCertificateEntry
 import java.time.LocalDate
 import java.time.Month
 import kotlin.reflect.typeOf
@@ -29,9 +35,13 @@ class StepsFragment : Fragment(), SensorEventListener{
 
     private var running = false
     private var totalSteps = 0f
-    private var previousTotalSteps = 0f
 
     private lateinit var mStepsViewModel: StepsViewModel
+    private var listSteps = emptyList<Steps>()
+    private var databaseDate: LocalDate? = null
+    private lateinit var localDate: LocalDate
+
+
     private lateinit var textSteps: TextView
     private lateinit var progressCircularProgressBar: CircularProgressBar
     override fun onCreateView(
@@ -45,12 +55,8 @@ class StepsFragment : Fragment(), SensorEventListener{
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        mStepsViewModel = ViewModelProvider(this).get(StepsViewModel::class.java)
-        val localDate = LocalDate.now()
-        val secondDate = LocalDate.of(2024, Month.MARCH,31)
-        println(Month.MARCH.toString())
-//        insertToDatabase(0f,2020,  Month.MARCH, 20)
-        println(localDate > secondDate)
+
+        mStepsViewModel = ViewModelProvider(this).get(StepsViewModel::class.java)
     }
 
     override fun onResume() {
@@ -67,15 +73,25 @@ class StepsFragment : Fragment(), SensorEventListener{
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSensorChanged(event: SensorEvent?) {
-        loadData(event)
+        mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
+            setData(steps)
+            textSteps = requireView().findViewById(R.id.stepsCounter)
+            progressCircularProgressBar = requireView().findViewById(R.id.progress_circular)
 
-        textSteps = requireView().findViewById(R.id.text_steps)
-        progressCircularProgressBar = requireView().findViewById(R.id.progress_circular)
-        val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
-        textSteps.text = ("$currentSteps")
-        progressCircularProgressBar.progress = currentSteps.toFloat()
-
+            totalSteps = event!!.values[0]
+            if(localDate > databaseDate)
+            {
+                //SET NEW DATE IN DB
+                //SET PREV TOTAL STEPS IN DB
+                val updateSteps = Steps(1, localDate.year, localDate.month.toString(), localDate.dayOfMonth, totalSteps)
+                mStepsViewModel.updateSteps(updateSteps)
+            }
+            val currentSteps = totalSteps.toInt() - listSteps[0].totalSteps.toInt()
+            textSteps.text = ("$currentSteps")
+            progressCircularProgressBar.progress = currentSteps.toFloat()
+        })
     }
 
     private fun loadData(event: SensorEvent?){
@@ -84,9 +100,16 @@ class StepsFragment : Fragment(), SensorEventListener{
         }
     }
 
-    private fun insertToDatabase(steps: Float, year: Int, month: Month, day: Int){
-        //val stepsDB = Steps(0, year, month, day, steps)
-        //mStepsViewModel.addSteps(stepsDB)
+    private fun insertToDatabase(steps: Float, year: Int, month: String, day: Int){
+        //CHANGE FROM INSERT TO CHANGE
+        val stepsDB = Steps(0, year, month, day, steps)
+        mStepsViewModel.addSteps(stepsDB)
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setData(steps: List<Steps>){
+        listSteps = steps
+        databaseDate = LocalDate.of(listSteps[0].year, MonthConverter.toMonth(listSteps[0].month), listSteps[0].day)
+        localDate = LocalDate.now()
     }
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         TODO("Not yet implemented")
