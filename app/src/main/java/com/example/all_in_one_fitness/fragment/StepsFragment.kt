@@ -113,6 +113,5 @@ class StepsFragment : Fragment(), SensorEventListener{
         localDate = LocalDate.now()
     }
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        TODO("Not yet implemented")
     }
 }
