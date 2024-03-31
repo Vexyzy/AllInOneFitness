@@ -1,5 +1,6 @@
 package com.example.all_in_one_fitness.fragment
 
+import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -55,7 +56,7 @@ class StepsFragment : Fragment(), SensorEventListener{
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mStepsViewModel = ViewModelProvider(this).get(StepsViewModel::class.java)
     }
 
