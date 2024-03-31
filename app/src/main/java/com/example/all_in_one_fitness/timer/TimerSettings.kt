@@ -54,37 +54,45 @@ class TimerSettings : AppCompatActivity() {
 
         spinnerMinutes.adapter = listMinutesAdapter
         spinnerSeconds.adapter = listSecondsAdapter
+        try {
+            spinnerMinutes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    itemSelected: View, selectedItemPosition: Int, selectedId: Long,
+                ) {
+                    //                val toast = Toast.makeText(
+                    //                    applicationContext,
+                    //                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
+                    //                )
+                    minutes = numberMinutesList[selectedItemPosition].toInt()
+                    //toast.show()
+                }
 
-        spinnerMinutes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                itemSelected: View, selectedItemPosition: Int, selectedId: Long,
-            ) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }finally {
+
+        }
+        try {
+            spinnerSeconds.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    itemSelected: View, selectedItemPosition: Int, selectedId: Long,
+                ) {
 //                val toast = Toast.makeText(
 //                    applicationContext,
 //                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
 //                )
-                minutes = numberMinutesList[selectedItemPosition].toInt()
-                //toast.show()
-            }
+                    seconds = numberSecondsList[selectedItemPosition].toInt()
+                    //toast.show()
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        spinnerSeconds.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                itemSelected: View, selectedItemPosition: Int, selectedId: Long,
-            ) {
-//                val toast = Toast.makeText(
-//                    applicationContext,
-//                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
-//                )
-                seconds = numberSecondsList[selectedItemPosition].toInt()
-                //toast.show()
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+        } finally {
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
 
         btnApply.setOnClickListener {
             TimerFragment.timerLenInt = minutes * 60 + seconds
