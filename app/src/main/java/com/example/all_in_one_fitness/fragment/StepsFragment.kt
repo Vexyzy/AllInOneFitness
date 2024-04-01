@@ -65,6 +65,7 @@ class StepsFragment : Fragment(), SensorEventListener{
         super.onResume()
         running = true
         val stepsSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         if(stepsSensor == null){
             Toast.makeText(requireContext(),
