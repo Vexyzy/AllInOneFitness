@@ -1,4 +1,4 @@
-package com.example.all_in_one_fitness.fragment
+package com.example.all_in_one_fitness.steps
 
 import android.content.Context
 import android.hardware.Sensor
@@ -16,18 +16,13 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.all_in_one_fitness.R
 import com.example.all_in_one_fitness.data.MonthConverter
 import com.example.all_in_one_fitness.data.Steps
 import com.example.roomapp.data.StepsViewModel
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.launch
-import java.security.KeyStore.TrustedCertificateEntry
 import java.time.LocalDate
-import java.time.Month
-import kotlin.reflect.typeOf
+
 
 
 class StepsFragment : Fragment(), SensorEventListener{
@@ -41,7 +36,6 @@ class StepsFragment : Fragment(), SensorEventListener{
     private var listSteps = emptyList<Steps>()
     private var databaseDate: LocalDate? = null
     private lateinit var localDate: LocalDate
-
 
     private lateinit var textSteps: TextView
     private lateinit var progressCircularProgressBar: CircularProgressBar
@@ -57,8 +51,9 @@ class StepsFragment : Fragment(), SensorEventListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        mStepsViewModel = ViewModelProvider(this).get(StepsViewModel::class.java)
-        //insertToDatabase(0f, 2020, "March", 1)
+        mStepsViewModel = ViewModelProvider(this)[StepsViewModel::class.java]
+//        insertToDatabase(0f, 2020, "MARCH", 1)
+//        onSensorChanged(null)
     }
 
     override fun onResume() {
@@ -82,13 +77,18 @@ class StepsFragment : Fragment(), SensorEventListener{
             setData(steps)
             textSteps = requireView().findViewById(R.id.stepsCounter)
             progressCircularProgressBar = requireView().findViewById(R.id.progress_circular)
-
             totalSteps = event!!.values[0]
             if(localDate > databaseDate)
             {
                 //SET NEW DATE IN DB
                 //SET PREV TOTAL STEPS IN DB
-                val updateSteps = Steps(1, localDate.year, localDate.month.toString(), localDate.dayOfMonth, totalSteps)
+                val updateSteps = Steps(
+                    1,
+                    localDate.year,
+                    localDate.month.toString(),
+                    localDate.dayOfMonth,
+                    totalSteps
+                )
                 mStepsViewModel.updateSteps(updateSteps)
             }
             val currentSteps = totalSteps.toInt() - listSteps[0].totalSteps.toInt()
@@ -112,7 +112,11 @@ class StepsFragment : Fragment(), SensorEventListener{
     private fun setData(steps: List<Steps>){
         listSteps = steps
 
-        databaseDate = LocalDate.of(listSteps[0].year, MonthConverter.toMonth(listSteps[0].month), listSteps[0].day)
+        databaseDate = LocalDate.of(
+            listSteps[0].year,
+            MonthConverter.toMonth(listSteps[0].month),
+            listSteps[0].day
+        )
         localDate = LocalDate.now()
     }
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

@@ -9,7 +9,7 @@ import com.example.all_in_one_fitness.data.Steps
 @Database(entities = [Steps::class], version = 1, exportSchema = false)
 abstract class StepsDatabase : RoomDatabase() {
 
-    abstract fun userDao(): StepsDao
+    abstract fun stepsDao(): StepsDao
 
     companion object {
         @Volatile

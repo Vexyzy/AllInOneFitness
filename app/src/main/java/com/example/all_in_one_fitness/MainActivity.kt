@@ -1,21 +1,12 @@
 package com.example.all_in_one_fitness
 
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
-import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.all_in_one_fitness.fragment.StepsFragment
+import com.example.all_in_one_fitness.fitness.FitnessFragment
+import com.example.all_in_one_fitness.steps.StepsFragment
 import com.example.all_in_one_fitness.timer.TimerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.mikhaellopez.circularprogressbar.CircularProgressBar
-import java.sql.Time
 
 
 class MainActivity : AppCompatActivity(){
@@ -25,6 +16,8 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        replaceFragment(StepsFragment())
+        bottomNavigation.selectedItemId = R.id.nav_steps
 
         if(TimerFragment.isNewTimeSet)
         {
@@ -42,6 +35,7 @@ class MainActivity : AppCompatActivity(){
                     replaceFragment(TimerFragment())
                 }
                 R.id.nav_fitnessCenter ->{
+                    replaceFragment(FitnessFragment())
                 }
             }
             true

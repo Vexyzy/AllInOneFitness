@@ -18,6 +18,9 @@
         android:theme="@style/Theme.AllinoneFitness"
         tools:targetApi="31">
         <activity
+            android:name=".exerciseList.ListOfExercises"
+            android:exported="false" />
+        <activity
             android:name=".timer.TimerSettings"
             android:exported="false" />
 

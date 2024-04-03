@@ -14,8 +14,8 @@ class StepsViewModel(application: Application): AndroidViewModel(application) {
     private val repository: StepsRepository
 
     init {
-        val userDao = StepsDatabase.getDatabase(application).userDao()
-        repository = StepsRepository(userDao)
+        val stepsDao = StepsDatabase.getDatabase(application).stepsDao()
+        repository = StepsRepository(stepsDao)
         readAllData = repository.readAllData
     }
 
