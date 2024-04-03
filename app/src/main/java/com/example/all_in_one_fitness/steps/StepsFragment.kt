@@ -31,6 +31,7 @@ class StepsFragment : Fragment(), SensorEventListener{
 
     private var running = false
     private var totalSteps = 0f
+    private var previousTotalSteps = 0
 
     private lateinit var mStepsViewModel: StepsViewModel
     private var listSteps = emptyList<Steps>()
@@ -54,6 +55,25 @@ class StepsFragment : Fragment(), SensorEventListener{
         mStepsViewModel = ViewModelProvider(this)[StepsViewModel::class.java]
 //        insertToDatabase(0f, 2020, "MARCH", 1)
 //        onSensorChanged(null)
+        Thread{
+            mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
+                setData(steps)
+                if(localDate > databaseDate)
+                {
+                    //SET NEW DATE IN DB
+                    //SET PREV TOTAL STEPS IN DB
+                    val updateSteps = Steps(
+                        1,
+                        localDate.year,
+                        localDate.month.toString(),
+                        localDate.dayOfMonth,
+                        totalSteps
+                    )
+                    mStepsViewModel.updateSteps(updateSteps)
+                }
+                previousTotalSteps = listSteps[0].totalSteps.toInt()
+            })
+        }.start()
     }
 
     override fun onResume() {
@@ -71,35 +91,19 @@ class StepsFragment : Fragment(), SensorEventListener{
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onSensorChanged(event: SensorEvent?) {
-        mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
-            setData(steps)
-            textSteps = requireView().findViewById(R.id.stepsCounter)
-            progressCircularProgressBar = requireView().findViewById(R.id.progress_circular)
-            totalSteps = event!!.values[0]
-            if(localDate > databaseDate)
-            {
-                //SET NEW DATE IN DB
-                //SET PREV TOTAL STEPS IN DB
-                val updateSteps = Steps(
-                    1,
-                    localDate.year,
-                    localDate.month.toString(),
-                    localDate.dayOfMonth,
-                    totalSteps
-                )
-                mStepsViewModel.updateSteps(updateSteps)
-            }
-            val currentSteps = totalSteps.toInt() - listSteps[0].totalSteps.toInt()
-            textSteps.text = ("$currentSteps")
-            progressCircularProgressBar.progress = currentSteps.toFloat()
-        })
+        totalSteps = event!!.values[0]
+        val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+        textSteps.text = currentSteps.toString()
+        progressCircularProgressBar.progress = currentSteps.toFloat()
     }
 
     private fun loadData(event: SensorEvent?){
         if(running){
             totalSteps = event!!.values[0]
+            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+            textSteps.text = currentSteps.toString()
+            progressCircularProgressBar.progress = currentSteps.toFloat()
         }
     }
 
