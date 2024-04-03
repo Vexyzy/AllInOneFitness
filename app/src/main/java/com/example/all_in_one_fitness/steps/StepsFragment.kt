@@ -55,7 +55,40 @@ class StepsFragment : Fragment(), SensorEventListener{
         mStepsViewModel = ViewModelProvider(this)[StepsViewModel::class.java]
 //        insertToDatabase(0f, 2020, "MARCH", 1)
 //        onSensorChanged(null)
-        Thread{
+
+        mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
+            setData(steps)
+            if(localDate > databaseDate)
+            {
+                //SET NEW DATE IN DB
+                //SET PREV TOTAL STEPS IN DB
+                val updateSteps = Steps(
+                    1,
+                    localDate.year,
+                    localDate.month.toString(),
+                    localDate.dayOfMonth,
+                    totalSteps
+                )
+                mStepsViewModel.updateSteps(updateSteps)
+            }
+            previousTotalSteps = listSteps[0].totalSteps.toInt()
+        })
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        running = true
+        val stepsSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        if(stepsSensor == null){
+            Toast.makeText(requireContext(),
+                "No Sensor Manager detected in this device", Toast.LENGTH_SHORT)
+                .show()
+        } else{
+            sensorManager?.registerListener(this, stepsSensor, SensorManager.SENSOR_DELAY_UI)
             mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
                 setData(steps)
                 if(localDate > databaseDate)
@@ -73,21 +106,6 @@ class StepsFragment : Fragment(), SensorEventListener{
                 }
                 previousTotalSteps = listSteps[0].totalSteps.toInt()
             })
-        }.start()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepsSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        if(stepsSensor == null){
-            Toast.makeText(requireContext(),
-                "No Sensor Manager detected in this device", Toast.LENGTH_SHORT)
-                .show()
-        } else{
-            sensorManager?.registerListener(this, stepsSensor, SensorManager.SENSOR_DELAY_UI)
         }
     }
 
