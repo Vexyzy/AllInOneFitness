@@ -46,6 +46,7 @@ class StepsFragment : Fragment(), SensorEventListener{
         savedInstanceState: Bundle?,
 
         ): View? {
+        mStepsViewModel = ViewModelProvider(this)[StepsViewModel::class.java]
         mStepsViewModel.readAllData.observe(viewLifecycleOwner, Observer { steps ->
             setData(steps)
             if(localDate > databaseDate)

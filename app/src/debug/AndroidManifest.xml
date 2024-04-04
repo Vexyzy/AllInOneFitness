@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name="com.example.all_in_one_fitness.FirstTimeActivity"
+            android:exported="false"
+
+            />
+    </application>
+</manifest>
