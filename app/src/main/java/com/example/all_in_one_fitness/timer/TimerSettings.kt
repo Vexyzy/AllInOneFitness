@@ -28,32 +28,23 @@ class TimerSettings : AppCompatActivity() {
         var seconds = 0
 
 
-        val numberMinutesList = arrayListOf<String>("1")
-        val numberSecondsList = arrayListOf<String>("0")
-        for(i in 1..60)
-        {
-            numberMinutesList.add(i.toString())
-            numberSecondsList.add(i.toString())
+        val numberList = arrayListOf<String>("0")
+        for(i in 1..60) {
+            numberList.add(i.toString())
         }
 
-        numberMinutesList.removeAt(0)
-
-        val listMinutesAdapter = ArrayAdapter<String>(
+        val listAdapter = ArrayAdapter<String>(
             this,
             R.layout.spinner_item,
-            numberMinutesList,
-        )
-        val listSecondsAdapter = ArrayAdapter<String>(
-            this,
-            R.layout.spinner_item,
-            numberSecondsList,
+            numberList
         )
 
-        listMinutesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        listSecondsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        listAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
 
-        spinnerMinutes.adapter = listMinutesAdapter
-        spinnerSeconds.adapter = listSecondsAdapter
+        spinnerMinutes.adapter = listAdapter
+        spinnerSeconds.adapter = listAdapter
+
+        spinnerMinutes.setSelection(1)
         try {
             spinnerMinutes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -64,7 +55,7 @@ class TimerSettings : AppCompatActivity() {
                     //                    applicationContext,
                     //                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
                     //                )
-                    minutes = numberMinutesList[selectedItemPosition].toInt()
+                    minutes = numberList[selectedItemPosition].toInt()
                     //toast.show()
                 }
 
@@ -83,7 +74,7 @@ class TimerSettings : AppCompatActivity() {
 //                    applicationContext,
 //                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
 //                )
-                    seconds = numberSecondsList[selectedItemPosition].toInt()
+                    seconds = numberList[selectedItemPosition].toInt()
                     //toast.show()
                 }
 
@@ -95,10 +86,21 @@ class TimerSettings : AppCompatActivity() {
 
 
         btnApply.setOnClickListener {
-            TimerFragment.timerLenInt = minutes * 60 + seconds
-            TimerFragment.isNewTimeSet = true
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            if(minutes * 60 + seconds == 0)
+            {
+                Toast.makeText(
+                    this,
+                    "Таймер не может начать отсчет с 0 секунд.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else
+            {
+                TimerFragment.timerLenInt = minutes * 60 + seconds
+                TimerFragment.isNewTimeSet = true
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

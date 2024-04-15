@@ -3,18 +3,17 @@ package com.example.all_in_one_fitness
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.all_in_one_fitness.data.Steps
-import com.example.all_in_one_fitness.fitness.FitnessFragment
-import com.example.all_in_one_fitness.steps.StepsFragment
-import com.example.all_in_one_fitness.timer.TimerFragment
-import com.example.roomapp.data.StepsViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.all_in_one_fitness.data.StepsViewModel
+import java.time.LocalDate
+import java.time.Month
 
 
 class MainActivity : AppCompatActivity(){
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var sharedPref: SharedPreferences
     private lateinit var mStepsViewModel: StepsViewModel
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_first_time)
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(){
         sharedPref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
         if(sharedPref.getBoolean("firstTime", true)){
             mStepsViewModel = ViewModelProvider(this)[StepsViewModel::class.java]
-            insertToDatabase(0f, 2020, "JANUARY", 1)
+            insertToDatabase(0f, LocalDate.of(2020, Month.JANUARY, 1))
             sharedPref.edit{
                 putBoolean("firstTime", false)
             }
@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity(){
             finish()
         }
     }
-    private fun insertToDatabase(steps: Float, year: Int, month: String, day: Int){
+    private fun insertToDatabase(steps: Float, date: LocalDate){
         //CHANGE FROM INSERT TO CHANGE
-        val stepsDB = Steps(0, year, month, day, steps)
+        val stepsDB = Steps(0, date.toString(), steps)
         mStepsViewModel.addSteps(stepsDB)
     }
 }

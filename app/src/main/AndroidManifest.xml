@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,7 @@
         android:theme="@style/Theme.AllinoneFitness"
         tools:targetApi="31">
         <activity
-            android:name=".exerciseList.ListOfExercises"
+            android:name=".fitness.FitnessCardActivity"
             android:exported="false" />
         <activity
             android:name=".timer.TimerSettings"

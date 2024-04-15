@@ -1,7 +1,8 @@
-package com.example.roomapp.data
+package com.example.all_in_one_fitness.data
 
 import androidx.lifecycle.LiveData
 import com.example.all_in_one_fitness.data.Steps
+import com.example.all_in_one_fitness.data.StepsDao
 
 class StepsRepository(private val stepsDao: StepsDao) {
 
@@ -11,8 +12,8 @@ class StepsRepository(private val stepsDao: StepsDao) {
         stepsDao.addSteps(steps)
     }
 
-    suspend fun updateSteps(steps: Steps){
-        stepsDao.updateSteps(steps)
+    suspend fun updateSteps(date: String, steps: Float, id: Int){
+        stepsDao.updateSteps(date, steps, id)
     }
 
 }

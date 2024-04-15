@@ -1,10 +1,9 @@
-package com.example.roomapp.data
+package com.example.all_in_one_fitness.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.all_in_one_fitness.data.Steps
 
 @Database(entities = [Steps::class], version = 1, exportSchema = false)
 abstract class StepsDatabase : RoomDatabase() {
@@ -15,7 +14,7 @@ abstract class StepsDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: StepsDatabase? = null
 
-        fun getDatabase(context: Context): StepsDatabase{
+        fun getDatabase(context: Context): StepsDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null){
                 return tempInstance
