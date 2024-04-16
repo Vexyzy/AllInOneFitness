@@ -87,6 +87,7 @@ class FitnessFragment : Fragment() {
                 DialogInterface.OnClickListener { dialog, id ->
                     dialog.cancel()
                     mFitnessViewModel.deleteAll()
+                    titleList.clear()
                 })
 
             builder1.setNegativeButton(
