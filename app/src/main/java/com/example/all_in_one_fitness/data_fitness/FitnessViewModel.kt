@@ -24,7 +24,7 @@ class FitnessViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    fun updateSteps(fitness: Fitness){
+    fun updateFitness(fitness: Fitness){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateFitness(fitness)
         }

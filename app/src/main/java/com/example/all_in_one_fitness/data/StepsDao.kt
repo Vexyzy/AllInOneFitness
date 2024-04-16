@@ -19,5 +19,4 @@ interface StepsDao {
 
     @Query("SELECT * FROM steps_table ORDER BY id ASC")
     fun readAllData(): LiveData<List<Steps>>
-
 }

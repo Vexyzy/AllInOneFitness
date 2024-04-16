@@ -56,10 +56,8 @@ class FitnessFragment : Fragment() {
 
         listView.onItemClickListener =
             OnItemClickListener { parent, view, position, id ->
-                Toast.makeText(requireContext(), titleList[position].title, Toast.LENGTH_SHORT)
-                    .show()
-
                 val intent = Intent(requireActivity(), FitnessCardActivity::class.java)
+                intent.putExtra("id", id)
                 intent.putExtra("title", titleList[position].title)
                 intent.putExtra("type", titleList[position].type)
                 intent.putExtra("subtitle", titleList[position].subTitle)

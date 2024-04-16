@@ -25,11 +25,10 @@ class FitnessCardActivity : AppCompatActivity() {
         var id = ""
         if(extras.getString("link") != null) {
             link = extras.getString("link")
-            if(link!!.startsWith('h')){
-                id = link!!.substring(32, 43)
-            }
-            else {
-                id = link!!.substring(24, 35)
+            id = if(link!!.startsWith('h')){
+                link.substring(32, 43)
+            } else {
+                link.substring(24, 35)
             }
         }
 //        https://www.youtube.com/watch?v=VwUYKfmXVTU&ab_channel=SJBody
@@ -46,7 +45,7 @@ class FitnessCardActivity : AppCompatActivity() {
         textViewSubtitle.text = subtitle
         if(link != null)
         {
-            val url = "https://img.youtube.com/vi/$id/maxresdefault.jpg"
+            val url = "https://img.youtube.com/vi/$id/0.jpg"
             println(url)
             Glide.with(this).load(url).into(imageYoutube)
 
@@ -57,6 +56,17 @@ class FitnessCardActivity : AppCompatActivity() {
         }
 
         buttonBack.setOnClickListener {
+            finish()
+        }
+
+        buttonEdit.setOnClickListener {
+            val intent = Intent(this, FitnessChange::class.java)
+            intent.putExtra("id", extras.getLong("id"))
+            intent.putExtra("title", title)
+            intent.putExtra("type", type)
+            intent.putExtra("link", link)
+            intent.putExtra("subtitle", subtitle)
+            startActivity(intent)
             finish()
         }
     }

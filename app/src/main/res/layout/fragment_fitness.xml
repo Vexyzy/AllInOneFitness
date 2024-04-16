@@ -27,16 +27,18 @@
         android:background="@color/blue"
         android:src="@drawable/add"
         android:tint="@color/white"
+        android:translationZ="999dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ListView
         android:id="@+id/listOfExercises"
         android:layout_width="match_parent"
-        android:layout_height="530dp"
+        android:layout_height="630dp"
 
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 

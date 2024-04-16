@@ -92,7 +92,7 @@ class FitnessAddFragment : Fragment() {
         val title = etTitle.text.toString()
         val subtitle = etSubtitle.text.toString()
         val link = etLink.text.toString()
-        if(inputCheck(title, subtitle)){
+        if(inputCheck(title)){
             val fitness = Fitness(0, type, title, subtitle, link)
             mFitnessModel.addFitness(fitness)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_SHORT).show()
@@ -103,11 +103,11 @@ class FitnessAddFragment : Fragment() {
             onDestroy()
         }
         else{
-            Toast.makeText(requireContext(), "Please fill out title and subtitle fields.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please fill out title fields.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun inputCheck(title: String, subtitle: String): Boolean {
-        return !(TextUtils.isEmpty(title) || TextUtils.isEmpty(subtitle))
+    private fun inputCheck(title: String): Boolean {
+        return !(TextUtils.isEmpty(title))
     }
 }
