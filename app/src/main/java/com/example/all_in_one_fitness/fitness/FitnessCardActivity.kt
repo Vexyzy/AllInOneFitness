@@ -1,5 +1,6 @@
 package com.example.all_in_one_fitness.fitness
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,25 +8,33 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.all_in_one_fitness.R
+import com.example.all_in_one_fitness.data_fitness.Fitness
+import com.example.all_in_one_fitness.data_fitness.FitnessViewModel
 
 
 class FitnessCardActivity : AppCompatActivity() {
+
+    private lateinit var mFitnessViewModel: FitnessViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fitness_card)
         val extras = intent.extras
+
+        mFitnessViewModel = ViewModelProvider(this)[FitnessViewModel::class.java]
 
         val title = extras!!.getString("title")
         val type = extras.getString("type")
         val subtitle = extras.getString("subtitle")
         var link: String? = null
         var id = ""
-        if(extras.getString("link") != null) {
+        if (extras.getString("link") != null) {
             link = extras.getString("link")
-            id = if(link!!.startsWith('h')){
+            id = if (link!!.startsWith('h')) {
                 link.substring(32, 43)
             } else {
                 link.substring(24, 35)
@@ -43,8 +52,7 @@ class FitnessCardActivity : AppCompatActivity() {
         textViewTitle.text = title
         textViewType.text = type
         textViewSubtitle.text = subtitle
-        if(link != null)
-        {
+        if (link != null) {
             val url = "https://img.youtube.com/vi/$id/0.jpg"
             println(url)
             Glide.with(this).load(url).into(imageYoutube)
@@ -68,6 +76,35 @@ class FitnessCardActivity : AppCompatActivity() {
             intent.putExtra("subtitle", subtitle)
             startActivity(intent)
             finish()
+        }
+
+        buttonRemove.setOnClickListener {
+            val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder1.setMessage("Точно удалить элемент?")
+            builder1.setCancelable(true)
+
+            builder1.setPositiveButton(
+                "Да",
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                    mFitnessViewModel.deleteFitness(
+                        Fitness(
+                        extras.getLong("id").toInt() + 1,
+                        type.toString(),
+                        title.toString(),
+                        subtitle.toString(),
+                        link.toString()
+                        )
+                    )
+                    finish()
+                })
+
+            builder1.setNegativeButton(
+                "Нет",
+                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+
+            val alert11: AlertDialog = builder1.create()
+            alert11.show()
         }
     }
 }

@@ -29,4 +29,16 @@ class FitnessViewModel(application: Application): AndroidViewModel(application) 
             repository.updateFitness(fitness)
         }
     }
+
+    fun deleteFitness(fitness: Fitness){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteFitness(fitness)
+        }
+    }
+
+    fun deleteAll(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
+        }
+    }
 }

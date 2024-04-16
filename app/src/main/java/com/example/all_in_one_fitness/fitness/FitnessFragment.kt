@@ -1,5 +1,6 @@
 package com.example.all_in_one_fitness.fitness
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -73,6 +75,26 @@ class FitnessFragment : Fragment() {
                 .replace(R.id.framgeContainer, FitnessAddFragment())
                 .commit()
             onDestroy()
+        }
+
+        val buttonDelete = requireActivity().findViewById<ImageFilterButton>(R.id.buttonDelete).setOnClickListener {
+            val builder1: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder1.setMessage("Точно хотите удалить все?")
+            builder1.setCancelable(true)
+
+            builder1.setPositiveButton(
+                "Да",
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                    mFitnessViewModel.deleteAll()
+                })
+
+            builder1.setNegativeButton(
+                "Нет",
+                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+
+            val alert11: AlertDialog = builder1.create()
+            alert11.show()
         }
     }
 

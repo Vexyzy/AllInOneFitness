@@ -13,4 +13,12 @@ class FitnessRepository(private val fitnessDao: FitnessDao) {
     suspend fun updateFitness(fitness: Fitness){
         fitnessDao.updateFitness(fitness)
     }
+
+    suspend fun deleteFitness(fitness: Fitness){
+        fitnessDao.deleteFitness(fitness)
+    }
+
+    suspend fun deleteAll(){
+        fitnessDao.deleteAll()
+    }
 }
