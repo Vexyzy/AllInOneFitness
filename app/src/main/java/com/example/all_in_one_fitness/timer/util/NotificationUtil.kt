@@ -40,7 +40,7 @@ class NotificationUtil {
                 .setContentTitle("Timer Expired!")
                 .setContentText("Start again?")
                 .setContentIntent(getPendingIntentWithStack(context, TimerFragment::class.java))
-                .addAction(R.drawable.baseline_play, "Start", startPendingIntent)
+                .addAction(R.drawable.baseline_play_arrow_24, "Start", startPendingIntent)
 
             val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             nManager.createNotificationChannel(CHANNEL_ID_TIME, CHANNEL_NAME_TIER, true)
@@ -101,7 +101,7 @@ class NotificationUtil {
                 .setContentIntent(getPendingIntentWithStack(context, TimerFragment::class.java))
                 .setOngoing(true)
 
-                .addAction(R.drawable.baseline_play, "Resume", resumePendingIntent)
+                .addAction(R.drawable.baseline_play_arrow_24, "Resume", resumePendingIntent)
 
             val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             nManager.createNotificationChannel(CHANNEL_ID_TIME, CHANNEL_NAME_TIER, true)

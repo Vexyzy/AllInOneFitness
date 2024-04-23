@@ -4,14 +4,19 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.getSystemService
 import com.example.all_in_one_fitness.R
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
@@ -58,15 +63,15 @@ class TimerFragment : Fragment() {
     enum class TimerState{
         Stopped, Paused, Running
     }
-    private lateinit var settings: Button
+    private lateinit var settings: ImageButton
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.Stopped
 
     private lateinit var timerString: TextView
-    private lateinit var buttonStart: FloatingActionButton
-    private lateinit var buttonPause: FloatingActionButton
-    private lateinit var buttonStop: FloatingActionButton
+    private lateinit var buttonStart: ImageButton
+    private lateinit var buttonPause: ImageButton
+    private lateinit var buttonStop: ImageButton
     private lateinit var progressCountdown: CircularProgressBar
     private lateinit var restore: Button
     private var secondsRemaining = 0L
@@ -231,29 +236,65 @@ class TimerFragment : Fragment() {
             if (secondsStr.length == 2) secondsStr
             else "0$secondsStr"
         }"
-        progressCountdown.progress = (timerLengthSeconds - secondsRemaining).toFloat()
+        progressCountdown.setProgressWithAnimation((timerLengthSeconds - secondsRemaining).toFloat())
+        if((timerLengthSeconds - secondsRemaining).toInt() == 0){
+            for(i in 1..3){
+                vibratePhone()
+                //set sound
+            }
+        }
     }
 
     private fun updateButtons(){
         when(timerState){
             TimerState.Running -> {
                 buttonStart.isEnabled = false
+                buttonStart.setBackgroundResource(R.drawable.baseline_play_arrow_off)
+
                 buttonPause.isEnabled = true
+                buttonPause.setBackgroundResource(R.drawable.baseline_pause)
+
                 buttonStop.isEnabled = true
+                buttonStop.setBackgroundResource(R.drawable.baseline_stop)
+
                 settings.isEnabled = false
+                settings.setBackgroundResource(R.drawable.baseline_settings_off)
             }
             TimerState.Stopped -> {
                 buttonStart.isEnabled = true
+                buttonStart.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+
                 buttonPause.isEnabled = false
+                buttonPause.setBackgroundResource(R.drawable.baseline_pause_off)
+
                 buttonStop.isEnabled = false
+                buttonStop.setBackgroundResource(R.drawable.baseline_stop_off)
+
                 settings.isEnabled = true
+                settings.setBackgroundResource(R.drawable.baseline_settings_24)
             }
             TimerState.Paused -> {
                 buttonStart.isEnabled = true
+                buttonStart.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+
                 buttonPause.isEnabled = false
+                buttonPause.setBackgroundResource(R.drawable.baseline_pause_off)
+
                 buttonStop.isEnabled = true
+                buttonStop.setBackgroundResource(R.drawable.baseline_stop)
+
                 settings.isEnabled = false
+                settings.setBackgroundResource(R.drawable.baseline_settings_off)
             }
+        }
+    }
+
+    fun Fragment.vibratePhone() {
+        val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(200)
         }
     }
 }
