@@ -4,49 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".timer.TimerSettings">
+    tools:context=".timer.TimerSettings"
+>
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_gym" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Select timer time"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinner_minutes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/apply"
+        android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Apply"
-
-        android:textSize="20sp"
+        android:text="Установите время"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/numberPicker_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_minutes" />
-
-    <Spinner
-        android:id="@+id/spinner_minutes"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="42dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinner_seconds"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/apply"
         android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="42dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="sans-serif-medium"
+        android:text="Готово"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberPicker_1" />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/numberPicker_1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:np_dividerColor="@color/black"
+        app:np_formatter="@string/number_picker_formatter"
+        app:np_height="180dp"
+        app:np_max="60"
+        app:np_min="0"
+        app:np_selectedTextColor="@color/light_green"
+        app:np_selectedTextSize="50sp"
+        app:np_textColor="@color/black"
+        app:np_textSize="40sp"
+        app:np_value="1"
+        app:np_width="60dp" />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/numberPicker_2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:np_dividerColor="@color/black"
+        app:np_formatter="@string/number_picker_formatter"
+        app:np_height="180dp"
+        app:np_max="60"
+        app:np_min="0"
+        app:np_selectedTextColor="@color/light_green"
+        app:np_selectedTextSize="50sp"
+        app:np_textColor="@color/black"
+        app:np_textSize="40sp"
+        app:np_value="0"
+        app:np_width="60dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

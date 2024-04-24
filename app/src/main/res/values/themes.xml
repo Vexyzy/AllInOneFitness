@@ -7,4 +7,9 @@
 
     <style name="Theme.AllinoneFitness" parent="Base.Theme.AllinoneFitness" />
 
+
+    <style name="Button.LightGreen" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/light_green</item>
+    </style>
+
 </resources>

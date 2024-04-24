@@ -2,6 +2,7 @@ package com.example.all_in_one_fitness.timer
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -16,7 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.getSystemService
+import android.widget.TimePicker
 import com.example.all_in_one_fitness.R
 import com.example.all_in_one_fitness.timer.util.NotificationUtil
 import com.example.all_in_one_fitness.timer.util.PrefUtil
@@ -63,6 +64,7 @@ class TimerFragment : Fragment() {
     enum class TimerState{
         Stopped, Paused, Running
     }
+
     private lateinit var settings: ImageButton
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds: Long = 0
@@ -75,6 +77,9 @@ class TimerFragment : Fragment() {
     private lateinit var progressCountdown: CircularProgressBar
     private lateinit var restore: Button
     private var secondsRemaining = 0L
+
+    private var minutes: Int = 1
+    private var seconds: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -130,6 +135,10 @@ class TimerFragment : Fragment() {
         buttonStop.setOnClickListener {v ->
             timer.cancel()
             onTimerFinished()
+        }
+        
+        timerString.setOnClickListener{
+            popTimePicker(requireView())
         }
     }
 
@@ -289,6 +298,7 @@ class TimerFragment : Fragment() {
         }
     }
 
+
     fun Fragment.vibratePhone() {
         val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
@@ -297,4 +307,25 @@ class TimerFragment : Fragment() {
             vibrator.vibrate(200)
         }
     }
+
+    fun popTimePicker(view: View){
+        val onTime = TimePickerDialog.OnTimeSetListener(){ timePicker: TimePicker,
+                                              selectedMinute: Int,
+                                              selectedSeconds: Int ->
+            timerLenInt = selectedMinute * 60 + selectedSeconds
+        }
+
+        val timePicker = TimePickerDialog(
+            requireContext(),
+            onTime,
+            minutes,
+            seconds,
+            true
+        )
+
+        timePicker.setTitle("Установите время")
+        timePicker.show()
+    }
+
+
 }

@@ -11,8 +11,10 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.example.all_in_one_fitness.MainActivity
 import com.example.all_in_one_fitness.R
+import com.shawnlin.numberpicker.NumberPicker
 import kotlin.math.min
 
 
@@ -21,71 +23,18 @@ class TimerSettings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer_settings)
 
-        val spinnerMinutes: Spinner = findViewById(R.id.spinner_minutes)
-        val spinnerSeconds: Spinner = findViewById(R.id.spinner_seconds)
-        val btnApply: Button = findViewById(R.id.apply)
+        val spinnerMinutes: NumberPicker = findViewById(R.id.numberPicker_1)
+        val spinnerSeconds: NumberPicker = findViewById(R.id.numberPicker_2)
+        val btnApply: AppCompatButton = findViewById(R.id.apply)
         var minutes = 1
         var seconds = 0
 
 
-        val numberList = arrayListOf<String>("0")
-        for(i in 1..60) {
-            numberList.add(i.toString())
-        }
-
-        val listAdapter = ArrayAdapter<String>(
-            this,
-            R.layout.spinner_item,
-            numberList
-        )
-
-        listAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-
-        spinnerMinutes.adapter = listAdapter
-        spinnerSeconds.adapter = listAdapter
-
-        spinnerMinutes.setSelection(1)
-        try {
-            spinnerMinutes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    itemSelected: View, selectedItemPosition: Int, selectedId: Long,
-                ) {
-                    //                val toast = Toast.makeText(
-                    //                    applicationContext,
-                    //                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
-                    //                )
-                    minutes = numberList[selectedItemPosition].toInt()
-                    //toast.show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }finally {
-
-        }
-        try {
-            spinnerSeconds.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    itemSelected: View, selectedItemPosition: Int, selectedId: Long,
-                ) {
-//                val toast = Toast.makeText(
-//                    applicationContext,
-//                    "Ваш выбор: " + numberList[selectedItemPosition], Toast.LENGTH_SHORT
-//                )
-                    seconds = numberList[selectedItemPosition].toInt()
-                    //toast.show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        } finally {
-
-        }
-
 
         btnApply.setOnClickListener {
+            minutes = spinnerMinutes.value
+            seconds = spinnerSeconds.value
+
             if(minutes * 60 + seconds == 0)
             {
                 Toast.makeText(
