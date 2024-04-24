@@ -20,7 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:background="@color/black"
+        android:layout_gravity="start"
+        android:padding="0dp"
+        android:focusable="false"
+        app:itemIconTint="@drawable/bottom_nav_style"
+        app:itemTextColor="@drawable/bottom_nav_style"
         app:menu="@menu/botom_nav"
+        app:labelVisibilityMode="labeled"
+
         />
 </RelativeLayout>

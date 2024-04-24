@@ -17,6 +17,8 @@ class FirstTimeActivity : AppCompatActivity() {
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
         replaceFragment(StepsFragment())
         bottomNavigation.selectedItemId = R.id.nav_steps
+        bottomNavigation.itemActiveIndicatorColor = getColorStateList(R.color.black)
+        bottomNavigation.itemRippleColor = getColorStateList(R.color.black)
 
         if(TimerFragment.isNewTimeSet)
         {

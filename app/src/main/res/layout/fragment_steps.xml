@@ -6,25 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.mikhaellopez.circularprogressbar.CircularProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:cpb_progress_max="10000"
-        app:cpb_background_progressbar_width="15dp"
-        app:cpb_progressbar_color="@color/blue"
-        app:cpb_progressbar_width="10dp"
-        app:cpb_round_border="true"
-        app:cpb_background_progressbar_color="@color/white_gray"
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_run"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="250dp"
+        app:cpb_background_progressbar_color="@color/black_gray"
+        app:cpb_background_progressbar_width="15dp"
+        app:cpb_progress_max="10000"
+        app:cpb_progressbar_color="@color/light_green"
+        app:cpb_progressbar_width="10dp"
+        app:cpb_round_border="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version Lizard"
+        android:text="Version Giraffe"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:rotation="0"
+        android:textColor="@color/light_green"
         android:rotationX="0"
         android:rotationY="0"
         android:text="0"
@@ -49,11 +61,14 @@
         android:id="@+id/text_steps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:rotation="0"
         android:rotationX="0"
         android:rotationY="0"
-        android:text="steps"
+        android:text="шагов"
+        android:textColor="@color/light_green"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stepsCounter" />
