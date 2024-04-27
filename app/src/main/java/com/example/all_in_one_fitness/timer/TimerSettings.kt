@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import com.example.all_in_one_fitness.MainActivity
 import com.example.all_in_one_fitness.R
 import com.shawnlin.numberpicker.NumberPicker
@@ -20,7 +21,7 @@ class TimerSettings : AppCompatActivity() {
         var minutes = 1
         var seconds = 0
 
-
+        //spinnerMinutes.dividerColor = ContextCompat.getColor(this, R.color.light_green)
 
         btnApply.setOnClickListener {
             minutes = spinnerMinutes.value

@@ -33,70 +33,12 @@ class FitnessFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fitness, container, false)
-        mFitnessViewModel = ViewModelProvider(this)[FitnessViewModel::class.java]
-
-        mFitnessViewModel.readAllData.observe(viewLifecycleOwner, Observer {
-            fitness ->
-            titleList.clear()
-            for(i in fitness)
-            {
-                titleList.add(i)
-            }
-            val adapter = FitnessListAdapter(requireContext(), titleList)
-            listView = view.findViewById(R.id.listOfExercises)
-
-            listView.adapter = adapter
-        })
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val buttonAdd = requireActivity().findViewById<ImageFilterButton>(R.id.buttonAdd)
-        listView = requireActivity().findViewById(R.id.listOfExercises)
-
-        listView.onItemClickListener =
-            OnItemClickListener { parent, view, position, id ->
-                val intent = Intent(requireActivity(), FitnessCardActivity::class.java)
-                intent.putExtra("id", id)
-                intent.putExtra("title", titleList[position].title)
-                intent.putExtra("type", titleList[position].type)
-                intent.putExtra("subtitle", titleList[position].subTitle)
-                if(titleList[position].link.isNotEmpty())
-                    intent.putExtra("link", titleList[position].link)
-                startActivity(intent)
-            }
-
-
-        buttonAdd.setOnClickListener{
-            requireActivity().supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.framgeContainer, FitnessAddFragment())
-                .commit()
-            onDestroy()
-        }
-
-        val buttonDelete = requireActivity().findViewById<ImageFilterButton>(R.id.buttonDelete).setOnClickListener {
-            val builder1: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            builder1.setMessage("Точно хотите удалить все?")
-            builder1.setCancelable(true)
-
-            builder1.setPositiveButton(
-                "Да",
-                DialogInterface.OnClickListener { dialog, id ->
-                    dialog.cancel()
-                    mFitnessViewModel.deleteAll()
-                    titleList.clear()
-                })
-
-            builder1.setNegativeButton(
-                "Нет",
-                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-
-            val alert11: AlertDialog = builder1.create()
-            alert11.show()
-        }
     }
 
 
