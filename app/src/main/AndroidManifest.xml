@@ -20,6 +20,9 @@
         android:theme="@style/Theme.AllinoneFitness"
         tools:targetApi="31">
         <activity
+            android:name=".fitness.FitnessExercise"
+            android:exported="false" />
+        <activity
             android:name=".fitness.FitnessChange"
             android:exported="false" />
         <activity
@@ -44,6 +47,7 @@
             android:name=".timer.TimerReceiver"
             android:enabled="true"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

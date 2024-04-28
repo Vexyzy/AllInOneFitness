@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fitness.FitnessExercise">
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_gym"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="Title"
+        android:textColor="@color/light_green"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="300dp"
+        android:layout_height="280dp"
+        app:layout_constraintBottom_toTopOf="@+id/exercise"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Однозначно, интерактивные прототипы описаны максимально подробно. Но выбранный нами инновационный путь создаёт необходимость включения в производственный план целого ряда внеочередных мероприятий с учётом комплекса кластеризации усилий. Как принято считать, непосредственные участники технического прогресса ассоциативно распределены по отраслям. Сложно сказать, почему интерактивные прототипы объявлены нарушающими общечеловеческие нормы этики и морали. С учётом сложившейся международной обстановки, начало повседневной работы по формированию позиции играет определяющее значение для системы обучения кадров, соответствующей насущным потребностям! Принимая во внимание показатели успешности, высококачественный прототип будущего проекта представляет собой интересный эксперимент проверки первоочередных требований. В рамках спецификации современных стандартов, представители современных социальных резервов будут указаны как претенденты на роль ключевых факторов. Равным образом, дальнейшее развитие различных форм деятельности требует определения и уточнения своевременного выполнения сверхзадачи. Учитывая ключевые сценарии поведения, сплочённость команды профессионалов играет определяющее значение для своевременного выполнения сверхзадачи. В рамках спецификации современных стандартов, стремящиеся вытеснить традиционное производство, нанотехнологии будут в равной степени предоставлены сами себе. Разнообразный и богатый опыт говорит нам, что высокое качество позиционных исследований обеспечивает актуальность направлений прогрессивного развития. Как уже неоднократно упомянуто, диаграммы связей разоблачены. Предварительные выводы неутешительны: повышение уровня гражданского сознания прекрасно подходит для реализации вывода текущих активов."
+            android:textColor="@color/white" />
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/exercise"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

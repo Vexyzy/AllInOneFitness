@@ -1,17 +1,20 @@
 package com.example.all_in_one_fitness.fitness
 
 import android.content.Context
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.all_in_one_fitness.R
 import com.example.all_in_one_fitness.data_fitness.Fitness
 
 class FitnessListAdapter(
     private val context: Context,
-    private val fitnessList: ArrayList<Fitness>
+    private val fitnessList: List<Exercise>
 ) : BaseAdapter() {
 
 
@@ -32,12 +35,10 @@ class FitnessListAdapter(
 
         val view = LayoutInflater.from(context).inflate(R.layout.fitness_item, p2, false)
 
-        val id = view.findViewById<TextView>(R.id.tv_id)
-        val type = view.findViewById<TextView>(R.id.tv_type)
-        val title = view.findViewById<TextView>(R.id.tv_title)
+        val gif = view.findViewById<ImageView>(R.id.gif_image)
+        val title = view.findViewById<TextView>(R.id.title_tv)
 
-        id.text = (p0 + 1).toString()
-        type.text = fitness.type
+        Glide.with(context).asGif().load(fitness.gifLink).into(gif)
         title.text = fitness.title
 
         return view
