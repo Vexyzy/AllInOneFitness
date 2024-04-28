@@ -6,7 +6,7 @@
 
     <item>
         <bitmap
-            android:src="@drawable/icon_image"
+            android:src="@drawable/icon"
             android:gravity="center"
             tools:ignore="ResourceCycle" />
     </item>
